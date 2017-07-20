@@ -7,7 +7,8 @@
 Switch_Position curMode, checkMode;
 ThreewaySwitch modeSwitch(3, 4, 5);
 
-Potentiometer pot1(A0), pot2(A1), pot3(A2);
+
+Potentiometer knob1(A0), knob2(A1), knob3(A2);
 
 void setup() {
   // initial potentiometer and switch read
@@ -27,7 +28,6 @@ void loop() {
       break;
     case DOWN:
       break;
-    
   }
 
 }
