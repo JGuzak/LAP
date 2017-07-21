@@ -6,6 +6,12 @@
 #include "Potentiometer.h"
 #include "ColorModes.h"
 
+// TODO:
+//  []  run tests on modifying incoming audio volume pre analog read 
+//          (adjust analog signal) vs post analog read (digital scaling).
+//  []  design and implement analogReadToColor()
+
+
 // pin constants:
 int leftStripPin = 10;
 int rightStripPin = 11;
@@ -13,7 +19,12 @@ int numPixels = 60;
 
 // internal state variables
 Switch_Position curMode, checkMode;
-int[] ledColor = [3];
+// array holds:
+//  0: green
+//  1: red
+//  2: blue
+//  3: white (brightness)
+int[] ledColor = [0, 0, 0, 0];
 
 // hardware objects
 ThreewaySwitch modeSwitch(3, 4, 5);
