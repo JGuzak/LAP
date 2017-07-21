@@ -13,6 +13,7 @@ int numPixels = 60;
 
 // internal state variables
 Switch_Position curMode, checkMode;
+int[] ledColor = [3];
 
 // hardware objects
 ThreewaySwitch modeSwitch(3, 4, 5);
