@@ -4,7 +4,7 @@
 #include <Adafruit_NeoPixel.h>
 #include "ThreewaySwitch.h"
 #include "Potentiometer.h"
-#include "MonoMode.h"
+#include "ColorModes.h"
 
 // pin constants:
 int leftStripPin = 10;
