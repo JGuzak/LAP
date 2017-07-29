@@ -6,7 +6,11 @@ Potentiometer::Potentiometer(int a) {
   value = analogRead(pin);
 }
 
-int Potentiometer::checkValue() {
-  return map(analogRead(pin), 0, MAX_READ, 0, 255);
+int Potentiometer::getValue() {
+    int nextValue = map(analogRead(pin), 0, MAX_READ, 0, MAX_OUTPUT);
+    if (nextValue >= value+2 || nextValue <= value-2) {
+        value = nextValue;
+    }
+    return value;
 }
 

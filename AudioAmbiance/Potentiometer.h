@@ -6,11 +6,11 @@ class Potentiometer {
 public:
   Potentiometer(int);
 
-  void updateValue();
-  int checkValue();
-  
+  int getValue();
+
+  static const int MAX_READ = 700;
+  static const int MAX_OUTPUT = 235;
 private:
-  static int MAX_READ = 1024;
   int pin, value;
 };
 

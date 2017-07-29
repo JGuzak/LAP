@@ -1,4 +1,4 @@
-
+// Author: Jordan Guzak
 
 #ifndef THREEWAY_SWITCH_H
 #define THREEWAY_SWITCH_H
