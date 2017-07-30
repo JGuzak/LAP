@@ -81,12 +81,16 @@
     <None Include="..\AudioInput.ino">
       <FileType>CppCode</FileType>
     </None>
+    <None Include="..\ColorOscillator.ino">
+      <FileType>CppCode</FileType>
+    </None>
     <None Include="..\Potentiometer.ino" />
     <None Include="..\ThreewaySwitch.ino" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\AudioInput.h" />
     <ClInclude Include="..\ColorModes.h" />
+    <ClInclude Include="..\ColorOscillator.h" />
     <ClInclude Include="..\Potentiometer.h" />
     <ClInclude Include="..\ThreewaySwitch.h" />
     <ClInclude Include="__vm\.AudioAmbiance.vsarduino.h" />

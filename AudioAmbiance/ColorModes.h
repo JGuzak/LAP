@@ -1,4 +1,5 @@
 // Author: Jordan Guzak
+
 #include <Adafruit_NeoPixel.h>
 
 // array holds:

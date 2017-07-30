@@ -1,3 +1,4 @@
+// Author: Jordan Guzak
 
 #include "Potentiometer.h"
 

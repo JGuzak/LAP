@@ -1,7 +1,9 @@
+// Author: Jordan Guzak
 
 #include "AudioInput.h"
 
 AudioInput::AudioInput(int p) {
+    upperReadThreshold = 100;
     pin = p;
     value = analogRead(pin);
 }
@@ -36,7 +38,10 @@ int AudioInput::getValue() {
     
     return value;
 }
-
+/*
+ * Sets the maximum reading threshold to normalize incoming audio.
+ * Argument must be between 20 and 150.
+ */
 void AudioInput::setMaxRead(int newMax) {
     if (newMax > MIN_UPPER_READ_THRESHOLD && newMax < MAX_UPPER_READ_THRESHOLD) {
         upperReadThreshold = newMax;

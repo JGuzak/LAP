@@ -19,6 +19,7 @@
     <None Include="..\ThreewaySwitch.ino" />
     <None Include="..\AudioAmbiance.ino" />
     <None Include="..\AudioInput.ino" />
+    <None Include="..\ColorOscillator.ino" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.AudioAmbiance.vsarduino.h">
@@ -34,6 +35,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\ColorModes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ColorOscillator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

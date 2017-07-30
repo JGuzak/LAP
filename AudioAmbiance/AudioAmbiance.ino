@@ -7,25 +7,25 @@
 #include "Potentiometer.h"
 #include "AudioInput.h"
 #include "ColorModes.h"
-
-// TODO:
-//  []  run tests on modifying incoming audio volume pre analog read 
-//          (adjust analog signal) vs post analog read (digital scaling).
-//  []  design and implement analogReadToColor()
+#include "ColorOscillator.h"
 
 // Constants:
 #define LEFT_STRIP_PIN 10
 #define RIGHT_STRIP_PIN 11
 #define NUM_LEDS 60
 #define BRIGHTNESS 70
+float MAX_STEPS = 1020;
+int QUARTER_STEPS = (int)(MAX_STEPS / 4);
 
 // internal state variables
-Switch_Position mode = UP;
+Switch_Position mode = CENTER;
 LEDColor color;
 float stepSamples[NUM_LEDS];
-int curStep = 0;
+float curStep = 0;
+float stepAmt = 4.0;
 
-// hardware objects
+// objects
+ColorOscillator colorOscillator;
 ThreewaySwitch modeSwitch(3, 4, 5);
 Potentiometer knob1(A0), knob2(A1), knob3(A2);
 AudioInput audioStream(A5);
@@ -33,13 +33,16 @@ Adafruit_NeoPixel leftStrip = Adafruit_NeoPixel(NUM_LEDS, LEFT_STRIP_PIN, NEO_GR
 Adafruit_NeoPixel rightStrip = Adafruit_NeoPixel(NUM_LEDS, RIGHT_STRIP_PIN, NEO_GRBW + NEO_KHZ800);
 
 void setup() {
-    Serial.begin(9600);
+    Serial.begin(19200);
     // set initial color and hardware reads
     knob1.getValue();
     knob1.getValue();
     knob1.getValue();
     color.W = 100;
     color = setRGBColor(knob1, knob2, knob3, color);
+
+    // temp mode switcher
+    pinMode(13, INPUT);
 
     audioStream.setMaxRead(100);
 
@@ -53,24 +56,25 @@ void setup() {
 }
 
 void loop() {
+    if (digitalRead(13) == HIGH && mode == UP) {
+        mode = CENTER;
+        Serial.println("switched to center mode");
+    } else if (digitalRead(13) == HIGH && mode == CENTER) {
+        mode = UP;
+        Serial.println("switched to up mode");
+    }
+
     switch(mode) {
         case UP: // single color mode
             color = setRGBColor(knob1, knob2, knob3, color);
+            displayStaticStrip(&rightStrip, adjustBrightness(audioStream, color));
             displayStaticStrip(&leftStrip, adjustBrightness(audioStream, color));
             break;
         case CENTER:
-//            color = setRGBColor(knob1, knob2, knob3, color);
-//            if (curStep > NUM_LEDS) {
-//                curStep = 0;
-//            }
-//            else {
-//                curStep++;
-//            }
-//
-//            stepSamples[curStep] = getVolumeScale(audioStream);
-//            Serial.println(stepSamples[curStep]);
-//            displayDynamicStrip(&leftStrip, stepSamples, color);
-//            
+            colorOscillator.setStepAmount((float)knob1.getValue() / (float)knob1.MAX_OUTPUT);
+            color = colorOscillator.updateColor(color);
+            displayStaticStrip(&rightStrip, adjustBrightness(audioStream, color));
+            displayStaticStrip(&leftStrip, adjustBrightness(audioStream, color));
             break;
     }
     

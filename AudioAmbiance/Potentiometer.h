@@ -1,3 +1,4 @@
+// Author: Jordan Guzak
 
 #ifndef POTENTIOMETER_H
 #define POTENTIOMETER_H

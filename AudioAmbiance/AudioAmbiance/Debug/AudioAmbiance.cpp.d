@@ -15,4 +15,5 @@ C:\Users\user\AppData\Local\Temp\VMBuilds\AudioAmbiance\uno\Debug\AudioAmbiance.
  C:\Users\user\AppData\Local\Temp\VMBuilds\AudioAmbiance\uno\Debug\ThreewaySwitch.h \
  C:\Users\user\AppData\Local\Temp\VMBuilds\AudioAmbiance\uno\Debug\Potentiometer.h \
  C:\Users\user\AppData\Local\Temp\VMBuilds\AudioAmbiance\uno\Debug\AudioInput.h \
- C:\Users\user\AppData\Local\Temp\VMBuilds\AudioAmbiance\uno\Debug\ColorModes.h
+ C:\Users\user\AppData\Local\Temp\VMBuilds\AudioAmbiance\uno\Debug\ColorModes.h \
+ C:\Users\user\AppData\Local\Temp\VMBuilds\AudioAmbiance\uno\Debug\ColorOscillator.h

@@ -78,6 +78,7 @@ typedef void *__builtin_va_list;
 
 #include "AudioAmbiance.ino"
 #include "AudioInput.ino"
+#include "ColorOscillator.ino"
 #include "Potentiometer.ino"
 #include "ThreewaySwitch.ino"
 #endif
