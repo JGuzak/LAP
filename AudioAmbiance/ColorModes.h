@@ -21,6 +21,7 @@ inline LEDColor setColorFromSinglePotentiometer(Potentiometer& knob, LEDColor co
 }
 
 inline LEDColor setRGBColor(Potentiometer& knob1, Potentiometer& knob2, Potentiometer& knob3, LEDColor color) {
+    color.W = map(knob1.getValue(), 0, knob1.MAX_OUTPUT, 0, 255);
     color.G = map(knob1.getValue(), 0, knob1.MAX_OUTPUT, 0, 255);
     color.R = map(knob2.getValue(), 0, knob2.MAX_OUTPUT, 0, 255);
     color.B = map(knob3.getValue(), 0, knob3.MAX_OUTPUT, 0, 255);

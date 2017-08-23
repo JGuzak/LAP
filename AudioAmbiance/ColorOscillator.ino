@@ -35,7 +35,6 @@ void ColorOscillator::updateStep() {
 
 LEDColor ColorOscillator::updateColor(LEDColor color) {
     updateStep();
-    Serial.println(curStep);
     if (curStep >= 0 && curStep < MAX_STEPS) {
         if (curStep < (QUARTER_STEPS)) {
             color.W = (int)curStep;
