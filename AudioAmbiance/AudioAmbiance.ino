@@ -13,8 +13,7 @@ bool DEBUG_MODE = true;
 #include "ColorOscillator.h"
 
 // Constants:
-#define LEFT_STRIP_PIN 10
-#define RIGHT_STRIP_PIN 11
+#define LED_STRIP_PIN 5
 #define NUM_LEDS 60
 #define BRIGHTNESS 70
 float MAX_STEPS = 1020;
@@ -29,11 +28,10 @@ float stepAmt = 4.0;
 
 // objects
 ColorOscillator colorOscillator;
-ThreewaySwitch modeSwitch(3, 4, 5);
+ThreewaySwitch modeSwitch(3, 4);
 Potentiometer knob1(A0), knob2(A1), knob3(A2);
 AudioInput audioStream(A5);
-Adafruit_NeoPixel leftStrip = Adafruit_NeoPixel(NUM_LEDS, LEFT_STRIP_PIN, NEO_GRBW + NEO_KHZ800);
-Adafruit_NeoPixel rightStrip = Adafruit_NeoPixel(NUM_LEDS, RIGHT_STRIP_PIN, NEO_GRBW + NEO_KHZ800);
+Adafruit_NeoPixel ledStrip = Adafruit_NeoPixel(NUM_LEDS, LED_STRIP_PIN, NEO_GRBW + NEO_KHZ800);
 
 void setup() {
     if (DEBUG_MODE) {
@@ -55,12 +53,9 @@ void setup() {
     audioStream.setMaxRead(100);
 
     // clear led strips
-    rightStrip.setBrightness(BRIGHTNESS);
-    rightStrip.begin();
-    rightStrip.show();
-    leftStrip.setBrightness(BRIGHTNESS);
-    leftStrip.begin();
-    leftStrip.show();
+    ledStrip.setBrightness(BRIGHTNESS);
+    ledStrip.begin();
+    ledStrip.show();
     Serial.println("Arduino Started");
 }
 
@@ -91,8 +86,7 @@ void loop() {
             digitalWrite(6, LOW);
             digitalWrite(5, LOW);
             color = setRGBColor(knob1, knob2, knob3, color);
-            displayStaticStrip(&rightStrip, adjustBrightness(audioStream, color));
-            displayStaticStrip(&leftStrip, adjustBrightness(audioStream, color));
+            displayStaticStrip(&ledStrip, adjustBrightness(audioStream, color));
             break;
         case CENTER:
             digitalWrite(7, LOW);
@@ -100,17 +94,14 @@ void loop() {
             digitalWrite(5, LOW);
             colorOscillator.setStepAmount((float)knob1.getValue() / (float)knob1.MAX_OUTPUT);
             color = colorOscillator.updateColor(color);
-            displayStaticStrip(&rightStrip, adjustBrightness(audioStream, color));
-            displayStaticStrip(&leftStrip, adjustBrightness(audioStream, color));
+            displayStaticStrip(&ledStrip, adjustBrightness(audioStream, color));
             break;
         case DOWN:
             digitalWrite(7, LOW);
             digitalWrite(6, LOW);
             digitalWrite(5, HIGH);
             color = setRGBColor(knob1, knob2, knob3, color);
-            displayStaticStrip(&rightStrip, color);
-            displayStaticStrip(&leftStrip, color);
+            displayStaticStrip(&ledStrip, color);
             break;
     }
-    
 }

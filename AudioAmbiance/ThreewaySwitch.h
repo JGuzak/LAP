@@ -8,7 +8,7 @@ enum Switch_Position{ UP, CENTER, DOWN };
 class ThreewaySwitch {
 
 public:
-    ThreewaySwitch(int, int, int);
+    ThreewaySwitch(int, int);
     Switch_Position checkPosition();
 
 private:
