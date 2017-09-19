@@ -20,7 +20,7 @@ float MAX_STEPS = 1020;
 int QUARTER_STEPS = (int)(MAX_STEPS / 4);
 
 // internal state variables
-Switch_Position mode = CENTER;
+Switch_Position mode = UP, newMode = UP;
 LEDColor color;
 float stepSamples[NUM_LEDS];
 float curStep = 0;
@@ -28,7 +28,7 @@ float stepAmt = 4.0;
 
 // objects
 ColorOscillator colorOscillator;
-ThreewaySwitch modeSwitch(3, 4);
+ThreewaySwitch modeSwitch(7, 6);
 Potentiometer knob1(A0), knob2(A1), knob3(A2);
 AudioInput audioStream(A5);
 Adafruit_NeoPixel ledStrip = Adafruit_NeoPixel(NUM_LEDS, LED_STRIP_PIN, NEO_GRBW + NEO_KHZ800);
@@ -45,10 +45,9 @@ void setup() {
     color = setRGBColor(knob1, knob2, knob3, color);
 
     // temp mode switcher
-    pinMode(13, INPUT);
-    pinMode(7, OUTPUT);
-    pinMode(6, OUTPUT);
-    pinMode(5, OUTPUT);
+    // pinMode(7, OUTPUT);
+    // pinMode(6, OUTPUT);
+    // pinMode(5, OUTPUT);
 
     audioStream.setMaxRead(100);
 
@@ -60,46 +59,51 @@ void setup() {
 }
 
 void loop() {
-    if (digitalRead(13) == HIGH && mode == UP) {
-        mode = CENTER;
-        if (DEBUG_MODE) {
-            Serial.println("switched to center mode");
-        }
-        delay(50);
-    } else if (digitalRead(13) == HIGH && mode == CENTER) {
-        mode = DOWN;
-        if (DEBUG_MODE) {
-            Serial.println("switched to up mode");
-        }
-        delay(50);
-    } else if (digitalRead(13) == HIGH && mode == DOWN) {
-        mode = UP;
-        if (DEBUG_MODE) {
-            Serial.println("switched to down mode");
-        }
-        delay(150);
+    // if (digitalRead(13) == HIGH && mode == UP) {
+    //     mode = CENTER;
+    //     if (DEBUG_MODE) {
+    //         Serial.println("switched to center mode");
+    //     }
+    //     delay(50);
+    // } else if (digitalRead(13) == HIGH && mode == CENTER) {
+    //     mode = DOWN;
+    //     if (DEBUG_MODE) {
+    //         Serial.println("switched to up mode");
+    //     }
+    //     delay(50);
+    // } else if (digitalRead(13) == HIGH && mode == DOWN) {
+    //     mode = UP;
+    //     if (DEBUG_MODE) {
+    //         Serial.println("switched to down mode");
+    //     }
+    //     delay(150);
+    // }
+    newMode = modeSwitch.getMode();
+    if (mode != newMode) {
+        mode = newMode;
     }
 
     switch(mode) {
         case UP: // single color mode
-            digitalWrite(7, HIGH);
-            digitalWrite(6, LOW);
-            digitalWrite(5, LOW);
+            // digitalWrite(7, HIGH);
+            // digitalWrite(6, LOW);
+            // digitalWrite(5, LOW);
             color = setRGBColor(knob1, knob2, knob3, color);
+            color.W = 100;
             displayStaticStrip(&ledStrip, adjustBrightness(audioStream, color));
             break;
         case CENTER:
-            digitalWrite(7, LOW);
-            digitalWrite(6, HIGH);
-            digitalWrite(5, LOW);
+            // digitalWrite(7, LOW);
+            // digitalWrite(6, HIGH);
+            // digitalWrite(5, LOW);
             colorOscillator.setStepAmount((float)knob1.getValue() / (float)knob1.MAX_OUTPUT);
             color = colorOscillator.updateColor(color);
             displayStaticStrip(&ledStrip, adjustBrightness(audioStream, color));
             break;
         case DOWN:
-            digitalWrite(7, LOW);
-            digitalWrite(6, LOW);
-            digitalWrite(5, HIGH);
+            // digitalWrite(7, LOW);
+            // digitalWrite(6, LOW);
+            // digitalWrite(5, HIGH);
             color = setRGBColor(knob1, knob2, knob3, color);
             displayStaticStrip(&ledStrip, color);
             break;
