@@ -9,7 +9,7 @@ class ThreewaySwitch {
 
 public:
     ThreewaySwitch(int, int);
-    Switch_Position getMode();
+    Switch_Position getPosition();
 
 private:
     int pin1, pin2;

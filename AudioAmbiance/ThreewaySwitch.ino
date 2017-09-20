@@ -10,7 +10,7 @@ ThreewaySwitch::ThreewaySwitch(int a, int b) {
     pinMode(pin2, INPUT_PULLUP);
 }
 
-Switch_Position ThreewaySwitch::getMode() {
+Switch_Position ThreewaySwitch::getPosition() {
     Serial.print(digitalRead(pin1));
     Serial.print(" ");
     Serial.print(digitalRead(pin2));

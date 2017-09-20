@@ -11,6 +11,7 @@ bool DEBUG_MODE = true;
 #include "AudioInput.h"
 #include "ColorModes.h"
 #include "ColorOscillator.h"
+#include "Oscillator.h"
 
 // Constants:
 #define LED_STRIP_PIN 5
@@ -28,7 +29,7 @@ float stepAmt = 4.0;
 
 // objects
 ColorOscillator colorOscillator;
-ThreewaySwitch modeSwitch(7, 6);
+ThreewaySwitch threewaySwitch(7, 6);
 Potentiometer knob1(A0), knob2(A1), knob3(A2);
 AudioInput audioStream(A5);
 Adafruit_NeoPixel ledStrip = Adafruit_NeoPixel(NUM_LEDS, LED_STRIP_PIN, NEO_GRBW + NEO_KHZ800);
@@ -37,28 +38,36 @@ void setup() {
     if (DEBUG_MODE) {
         Serial.begin(19200);
     }
-    // set initial color and hardware reads
+
+    // init color and hardware states
+    threewaySwitch.
     knob1.getValue();
     knob1.getValue();
     knob1.getValue();
     color.W = 100;
     color = setRGBColor(knob1, knob2, knob3, color);
 
-    // temp mode switcher
-    // pinMode(7, OUTPUT);
-    // pinMode(6, OUTPUT);
-    // pinMode(5, OUTPUT);
+    // temp mode switcher, don't use this
+    // pinMode(4, OUTPUT);
+    // pinMode(3, OUTPUT);
+    // pinMode(2, OUTPUT);
 
     audioStream.setMaxRead(100);
 
-    // clear led strips
+    // init led strips
     ledStrip.setBrightness(BRIGHTNESS);
     ledStrip.begin();
     ledStrip.show();
-    Serial.println("Arduino Started");
+
+    if (DEBUG_MODE) {
+        Serial.println("Arduino Started");
+    }
 }
 
 void loop() {
+
+    // ***************************
+    // temp old shitty way of switching modes, fix threeway switch class to handle this properly
     // if (digitalRead(13) == HIGH && mode == UP) {
     //     mode = CENTER;
     //     if (DEBUG_MODE) {
@@ -78,34 +87,66 @@ void loop() {
     //     }
     //     delay(150);
     // }
-    newMode = modeSwitch.getMode();
+    // ***************************
+
+    // TODO: get this shit working
+    newMode = threewaySwitch.getPosition();
     if (mode != newMode) {
         mode = newMode;
     }
 
     switch(mode) {
-        case UP: // single color mode
-            // digitalWrite(7, HIGH);
-            // digitalWrite(6, LOW);
-            // digitalWrite(5, LOW);
+        case UP: // single color responsive mode
+            // knob 1 sets red value
+            // knob 2 sets green value
+            // knob 3 sets blue value
             color = setRGBColor(knob1, knob2, knob3, color);
             color.W = 100;
             displayStaticStrip(&ledStrip, adjustBrightness(audioStream, color));
+
+            // led outputs
+            // digitalWrite(4, HIGH);
+            // digitalWrite(3, LOW);
+            // digitalWrite(2, LOW);
             break;
-        case CENTER:
-            // digitalWrite(7, LOW);
-            // digitalWrite(6, HIGH);
-            // digitalWrite(5, LOW);
+        case CENTER: // color oscillating responsive mode
+            // knob 1 sets color osc speed
+            // knob 2
+            // knob 3
             colorOscillator.setStepAmount((float)knob1.getValue() / (float)knob1.MAX_OUTPUT);
-            color = colorOscillator.updateColor(color);
+            color = colorOscillator.updateColorCycle(color);
             displayStaticStrip(&ledStrip, adjustBrightness(audioStream, color));
+
+            // led outputs
+            // digitalWrite(4, LOW);
+            // digitalWrite(3, HIGH);
+            // digitalWrite(2, LOW);
             break;
-        case DOWN:
-            // digitalWrite(7, LOW);
-            // digitalWrite(6, LOW);
-            // digitalWrite(5, HIGH);
-            color = setRGBColor(knob1, knob2, knob3, color);
+        case DOWN: // color and brightness oscillating static mode
+            // knob 1 sets color osc speed
+            // knob 2 sets brightness osc speed
+            // knob 3 sets brightness osc depth
+            olorOscillator.setStepAmount((float)knob1.getValue() / (float)knob1.MAX_OUTPUT);
+            color = colorOscillator.updateColorCycle(color);
+            
             displayStaticStrip(&ledStrip, color);
+
+            // led outputs
+            // digitalWrite(4, LOW);
+            // digitalWrite(3, LOW);
+            // digitalWrite(2, HIGH);
             break;
+    }
+
+    if (DEBUG_MODE) {
+        Serial.print("Current Mode: ");
+        Serial.print(mode);
+        Serial.print(" Knob 1: ");
+        Serial.print(knob1.getValue());
+        Serial.print(" Knob 2: ");
+        Serial.print(knob2.getValue());
+        Serial.print(" Knob 3: ");
+        Serial.print(knob3.getValue());
+        Serial.println();
     }
 }

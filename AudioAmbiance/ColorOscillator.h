@@ -9,7 +9,7 @@ public:
 
     void setStepAmount(float);
     void updateStep();
-    LEDColor updateColor(LEDColor);
+    LEDColor updateColorCycle(LEDColor);
 
 private:
     static const int MAX_STEPS = 1020;
