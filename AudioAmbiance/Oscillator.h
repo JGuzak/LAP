@@ -9,12 +9,12 @@ public:
     ~Oscillator() = default;
 
     void setOscSpeed(float);
-    void updatePosition();
-    float getCurrentPosition();
+    void updateStep();
+    float getCurPos();
 
 private:
-    float position;
-
+    static const int MAX_STEPS = 1020;
+    float curStep, position, stepAmt;
 }
 
-#endif // !COLOR_OSCILLATOR_H
+#endif // !OSCILLATOR_H

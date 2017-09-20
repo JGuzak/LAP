@@ -15,11 +15,6 @@ struct LEDColor
     int W = 0;
 };
 
-inline LEDColor setColorFromSinglePotentiometer(Potentiometer& knob, LEDColor color) {
-
-    return color;
-}
-
 inline LEDColor setRGBColor(Potentiometer& knob1, Potentiometer& knob2, Potentiometer& knob3, LEDColor color) {
     color.G = map(knob1.getValue(), 0, knob1.MAX_OUTPUT, 0, 255);
     color.R = map(knob2.getValue(), 0, knob2.MAX_OUTPUT, 0, 255);
@@ -28,7 +23,7 @@ inline LEDColor setRGBColor(Potentiometer& knob1, Potentiometer& knob2, Potentio
     return color;
 }
 
-inline float getVolumeScale(AudioInput& audio) {
+inline float getScale(AudioInput& audio) {
     float scale = (float)audio.getValue() / (float)audio.MAX_UPPER_OUTPUT;
 
     if (scale > 1.0) {
@@ -38,7 +33,7 @@ inline float getVolumeScale(AudioInput& audio) {
     return scale;
 }
 
-inline float getVolumeScale(Potentiometer& knob) {
+inline float getScale(Potentiometer& knob) {
     float scale = (float)knob.getValue() / (float)knob.MAX_OUTPUT;
 
     if (scale > 1.0) {
@@ -48,19 +43,7 @@ inline float getVolumeScale(Potentiometer& knob) {
     return scale;
 }
 
-inline LEDColor adjustBrightness(AudioInput& audio, LEDColor color) {
-    float scale = getVolumeScale(audio);
-
-    color.G = color.G * scale;
-    color.R = color.R * scale;
-    color.B = color.B * scale;
-    color.W = color.W * scale;
-
-    return color;
-}
-
-inline LEDColor adjustBrightness(Potentiometer& knob, LEDColor color) {
-    float scale = getVolumeScale(knob);
+inline LEDColor adjustBrightness(float scale, LEDColor color) {
 
     color.G = color.G * scale;
     color.R = color.R * scale;

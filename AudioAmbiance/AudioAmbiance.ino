@@ -12,6 +12,7 @@ bool DEBUG_MODE = true;
 #include "ColorModes.h"
 #include "ColorOscillator.h"
 #include "Oscillator.h"
+#include "ExtraFunctions.h"
 
 // Constants:
 #define LED_STRIP_PIN 5
@@ -29,6 +30,7 @@ float stepAmt = 4.0;
 
 // objects
 ColorOscillator colorOscillator;
+Oscillator oscillator;
 ThreewaySwitch threewaySwitch(7, 6);
 Potentiometer knob1(A0), knob2(A1), knob3(A2);
 AudioInput audioStream(A5);
@@ -40,7 +42,7 @@ void setup() {
     }
 
     // init color and hardware states
-    threewaySwitch.
+    // threewaySwitch.getPosition();
     knob1.getValue();
     knob1.getValue();
     knob1.getValue();
@@ -102,7 +104,8 @@ void loop() {
             // knob 3 sets blue value
             color = setRGBColor(knob1, knob2, knob3, color);
             color.W = 100;
-            displayStaticStrip(&ledStrip, adjustBrightness(audioStream, color));
+            float brightnessScale = getScale(audioStream);
+            displayStaticStrip(&ledStrip, adjustBrightness(brightnessScale, color));
 
             // led outputs
             // digitalWrite(4, HIGH);
@@ -115,7 +118,8 @@ void loop() {
             // knob 3
             colorOscillator.setStepAmount((float)knob1.getValue() / (float)knob1.MAX_OUTPUT);
             color = colorOscillator.updateColorCycle(color);
-            displayStaticStrip(&ledStrip, adjustBrightness(audioStream, color));
+            float brightnessScale = getScale(audioStream);
+            displayStaticStrip(&ledStrip, adjustBrightness(brightnessScale, color));
 
             // led outputs
             // digitalWrite(4, LOW);
@@ -126,10 +130,12 @@ void loop() {
             // knob 1 sets color osc speed
             // knob 2 sets brightness osc speed
             // knob 3 sets brightness osc depth
-            olorOscillator.setStepAmount((float)knob1.getValue() / (float)knob1.MAX_OUTPUT);
+            colorOscillator.setStepAmt(getScale(knob1));
             color = colorOscillator.updateColorCycle(color);
-            
-            displayStaticStrip(&ledStrip, color);
+            oscillator.setOscSpeed(getScale(knob2));
+            float maxBrightness = getScale(knob3);
+            float brightness = mapFloat(oscillator.getCurPos(), -1.0, 1.0, 0.0, maxBrightness);
+            displayStaticStrip(&ledStrip, adjustBrightness(brightness, color));
 
             // led outputs
             // digitalWrite(4, LOW);

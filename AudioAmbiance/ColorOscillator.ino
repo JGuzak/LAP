@@ -2,6 +2,8 @@
 
 #include "ColorOscillator.h"
 
+
+
 ColorOscillator::ColorOscillator() {
     curStep = 0.0;
     stepAmt = 1.0;
@@ -11,7 +13,7 @@ ColorOscillator::ColorOscillator() {
  * Sets the step amount as long as the value is between
  * 0 and 1.
  */
-void ColorOscillator::setStepAmount(float newStepAmt) {
+void ColorOscillator::setStepAmt(float newStepAmt) {
     if (newStepAmt < 1.0) {
         if (newStepAmt <= 0.0) {
             newStepAmt = 0.05;

@@ -7,7 +7,7 @@ class ColorOscillator {
 public:
     ColorOscillator();
 
-    void setStepAmount(float);
+    void setStepAmt(float);
     void updateStep();
     LEDColor updateColorCycle(LEDColor);
 
