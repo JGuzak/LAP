@@ -25,9 +25,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="5.6568542"
-     inkscape:cx="210.66446"
-     inkscape:cy="498.01971"
+     inkscape:zoom="1.4142136"
+     inkscape:cx="389.9794"
+     inkscape:cy="897.64103"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -61,7 +61,7 @@
      id="layer1">
     <g
        id="g850"
-       transform="rotate(180,84.499973,29.5)">
+       transform="rotate(180,82.816175,36.422281)">
       <circle
          r="3.3240998"
          cy="29.5"
@@ -105,5 +105,10 @@
        cx="66.400002"
        cy="163.60001"
        r="3.409091" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.19988266;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 27.099942,1.1999414 H 171.90006 V 89.900058 H 27.099942 Z"
+       id="rect821"
+       inkscape:connector-curvature="0" />
   </g>
 </svg>
