@@ -35,7 +35,7 @@ Oscillator colorOsc;
 Oscillator brightnessOsc;
 
 // hardware input objects
-ThreewaySwitch threewaySwitch(7, 6);
+ThreewaySwitch threewaySwitch(6, 7);
 Potentiometer knob1(A0), knob2(A1), knob3(A2);
 AudioInput audioStream(A5);
 
@@ -86,10 +86,10 @@ void setup() {
 void loop() {
 
     // TODO: get this shit working
-    newMode = threewaySwitch.getPosition();
-    if (mode != newMode) {
-        mode = newMode;
-    }
+    // newMode = threewaySwitch.getPosition();
+    // if (mode != newMode) {
+    //     mode = newMode;
+    // }
 
     switch(mode) {
         case UP: // single color responsive mode
@@ -151,15 +151,14 @@ void loop() {
     }
 
     if (DEBUG_MODE) {
-        Serial.print("Mode: ");
-        Serial.print(mode+1);
-        Serial.print(" |Knob 1: ");
-        Serial.print(knob1.getValue());
-        Serial.print(" |Knob 2: ");
-        Serial.print(knob2.getValue());
-        Serial.print(" |Knob 3: ");
-        Serial.print(knob3.getValue());
-        // Serial.print();
-        Serial.println();
+        // Serial.print("Mode: ");
+        // Serial.print(mode+1);
+        // Serial.print(" |Knob 1: ");
+        // Serial.print(knob1.getValue());
+        // Serial.print(" |Knob 2: ");
+        // Serial.print(knob2.getValue());
+        // Serial.print(" |Knob 3: ");
+        // Serial.print(knob3.getValue());
+        // Serial.println();
     }
 }

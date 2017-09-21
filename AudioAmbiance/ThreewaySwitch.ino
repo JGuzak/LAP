@@ -39,5 +39,9 @@ void ThreewaySwitch::updateState() {
     for (int i = 0; i < NUM_STATES; i++) {
         state[i] = STATE[newState][i];
     }
+    Serial.print(digitalRead(pin1));
+    Serial.print(" ");
+    Serial.print(digitalRead(pin2));
+    Serial.println();
     // Serial.println(position);
 }
