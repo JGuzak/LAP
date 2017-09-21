@@ -23,7 +23,7 @@ const int QUARTER_STEPS = (int)(MAX_STEPS / 4);
 
 
 // internal state variables
-Switch_Position mode = DOWN, newMode = DOWN;
+Switch_Position mode = UP, newMode = UP;
 LEDColor color;
 float stepSamples[NUM_LEDS];
 float curStep = 0;
@@ -85,34 +85,11 @@ void setup() {
 
 void loop() {
 
-    // ***************************
-    // temp old shitty way of switching modes, fix threeway switch class to handle this properly
-    // if (digitalRead(13) == HIGH && mode == UP) {
-    //     mode = CENTER;
-    //     if (DEBUG_MODE) {
-    //         Serial.println("switched to center mode");
-    //     }
-    //     delay(50);
-    // } else if (digitalRead(13) == HIGH && mode == CENTER) {
-    //     mode = DOWN;
-    //     if (DEBUG_MODE) {
-    //         Serial.println("switched to up mode");
-    //     }
-    //     delay(50);
-    // } else if (digitalRead(13) == HIGH && mode == DOWN) {
-    //     mode = UP;
-    //     if (DEBUG_MODE) {
-    //         Serial.println("switched to down mode");
-    //     }
-    //     delay(150);
-    // }
-    // ***************************
-
     // TODO: get this shit working
-    // newMode = threewaySwitch.getPosition();
-    // if (mode != newMode) {
-    //     mode = newMode;
-    // }
+    newMode = threewaySwitch.getPosition();
+    if (mode != newMode) {
+        mode = newMode;
+    }
 
     switch(mode) {
         case UP: // single color responsive mode
@@ -139,8 +116,8 @@ void loop() {
             color = colorOsc.updateColorCycle(color);
 
             // TODO: setup features for knobs 2 and 3
-            // knob 2
-            // knob 3
+            // knob 2 
+            // knob 3 
 
             // audio stream sets brightness scale
             brightnessScale = getScale(audioStream);
