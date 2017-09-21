@@ -11,26 +11,28 @@ bool DEBUG_MODE = true;
 #include "AudioInput.h"
 #include "ColorModes.h"
 #include "Oscillator.h"
-#include "Oscillator.h"
 #include "ExtraFunctions.h"
 
 // Constants:
-#define LED_STRIP_PIN 5
-#define NUM_LEDS 60
-#define BRIGHTNESS 70
-float MAX_STEPS = 1020;
-int QUARTER_STEPS = (int)(MAX_STEPS / 4);
+const int LED_STRIP_PIN = 5;
+const int  NUM_LEDS = 60;
+const int  BRIGHTNESS = 80;
+const int  NUM_MODES = 3;
+const float MAX_STEPS = 1020.0;
+const int QUARTER_STEPS = (int)(MAX_STEPS / 4);
+
 
 // internal state variables
-Switch_Position mode = UP, newMode = UP;
+Switch_Position mode = DOWN, newMode = DOWN;
 LEDColor color;
 float stepSamples[NUM_LEDS];
 float curStep = 0;
 float stepAmt = 4.0;
+float brightnessScale = 0.0;
 
 // internal state objects
-Oscillator colorOscillator;
-Oscillator oscillator;
+Oscillator colorOsc;
+Oscillator brightnessOsc;
 
 // hardware input objects
 ThreewaySwitch threewaySwitch(7, 6);
@@ -38,7 +40,7 @@ Potentiometer knob1(A0), knob2(A1), knob3(A2);
 AudioInput audioStream(A5);
 
 // hardware output objects
-bool ledMode[3] = {};
+int ledModePin[NUM_STATES] = { 11, 12, 13 };
 Adafruit_NeoPixel ledStrip = Adafruit_NeoPixel(NUM_LEDS, LED_STRIP_PIN, NEO_GRBW + NEO_KHZ800);
 
 void setup() {
@@ -54,10 +56,20 @@ void setup() {
     color.W = 100;
     color = setRGBColor(knob1, knob2, knob3, color);
 
-    // temp mode switcher, don't use this
-    pinMode(4, OUTPUT);
-    pinMode(3, OUTPUT);
-    pinMode(2, OUTPUT);
+    // led setup
+    for (int i = 0; i < NUM_STATES; i++) {
+        pinMode(ledModePin[i], OUTPUT);
+    }
+
+    // TODO: repackage this for later
+    // led boot
+    for (int i = 0; i < NUM_STATES; i++) {
+        digitalWrite(ledModePin[i], HIGH);
+        delay(100);
+    }
+    for (int i = 0; i < NUM_STATES; i++) {
+        digitalWrite(ledModePin[i], LOW);
+    }
 
     audioStream.setMaxRead(100);
 
@@ -97,10 +109,10 @@ void loop() {
     // ***************************
 
     // TODO: get this shit working
-    newMode = threewaySwitch.getPosition();
-    if (mode != newMode) {
-        mode = newMode;
-    }
+    // newMode = threewaySwitch.getPosition();
+    // if (mode != newMode) {
+    //     mode = newMode;
+    // }
 
     switch(mode) {
         case UP: // single color responsive mode
@@ -116,14 +128,15 @@ void loop() {
             displayStaticStrip(&ledStrip, adjustBrightness(brightnessScale, color));
 
             // led outputs
-            // digitalWrite(4, HIGH);
-            // digitalWrite(3, LOW);
-            // digitalWrite(2, LOW);
+            digitalWrite(ledModePin[0], HIGH);
+            digitalWrite(ledModePin[1], LOW);
+            digitalWrite(ledModePin[2], LOW);
+
             break;
         case CENTER: // color oscillating responsive mode
             // knob 1 sets color osc speed
-            colorOscillator.setStepAmount((float)knob1.getValue() / (float)knob1.MAX_OUTPUT);
-            color = colorOscillator.updateColorCycle(color);
+            colorOsc.setStepAmt((float)knob1.getValue() / (float)knob1.MAX_OUTPUT);
+            color = colorOsc.updateColorCycle(color);
 
             // TODO: setup features for knobs 2 and 3
             // knob 2
@@ -134,44 +147,42 @@ void loop() {
             displayStaticStrip(&ledStrip, adjustBrightness(brightnessScale, color));
 
             // led outputs
-            // digitalWrite(4, LOW);
-            // digitalWrite(3, HIGH);
-            // digitalWrite(2, LOW);
+            digitalWrite(ledModePin[0], LOW);
+            digitalWrite(ledModePin[1], HIGH);
+            digitalWrite(ledModePin[2], LOW);
             break;
         case DOWN: // color and brightness oscillating static mode
             // knob 1 sets color osc speed
-            colorOscillator.setStepAmt(getScale(knob1));
-            color = colorOscillator.updateColorCycle(color);
+            colorOsc.setStepAmt(getScale(knob1));
+            color = colorOsc.updateColorCycle(color);
 
             // knob 2 sets brightness osc speed
-            oscillator.setOscSpeed(getScale(knob2));
+            brightnessOsc.setStepAmt(mapFloat(getScale(knob2), 0.0, 1.0, 0.3, 1.0));
 
             // knob 3 sets brightness osc depth
             float maxBrightness = getScale(knob3);
 
             // audio stream sets brightness scale
-            brightnessScale = mapFloat(oscillator.getCurPos(), -1.0, 1.0, 0.0, maxBrightness);
+            brightnessScale = mapFloat(brightnessOsc.getCurPos(), -1.0, 1.0, 0.0, maxBrightness);
             displayStaticStrip(&ledStrip, adjustBrightness(brightnessScale, color));
 
             // led outputs
-            // digitalWrite(4, LOW);
-            // digitalWrite(3, LOW);
-            // digitalWrite(2, HIGH);
+            digitalWrite(ledModePin[0], LOW);
+            digitalWrite(ledModePin[1], LOW);
+            digitalWrite(ledModePin[2], HIGH);
             break;
     }
 
     if (DEBUG_MODE) {
-        Serial.print("Current Mode: ");
-        Serial.print(mode);
-        Serial.print(" |Threeway Switch Pins: |A= ");
-        Serial.print();
+        Serial.print("Mode: ");
+        Serial.print(mode+1);
         Serial.print(" |Knob 1: ");
         Serial.print(knob1.getValue());
         Serial.print(" |Knob 2: ");
         Serial.print(knob2.getValue());
         Serial.print(" |Knob 3: ");
         Serial.print(knob3.getValue());
-        Serial.print();
+        // Serial.print();
         Serial.println();
     }
 }

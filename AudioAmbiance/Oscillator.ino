@@ -13,8 +13,8 @@ Oscillator::Oscillator() {
  */
 void Oscillator::setStepAmt(float newStepAmt) {
     if (newStepAmt < 1.0) {
-        if (newStepAmt <= 0.0) {
-            newStepAmt = 0.05;
+        if (newStepAmt < 0.0) {
+            newStepAmt = 0.0;
         }
         stepAmt = newStepAmt * 25.0;
         // Serial.println(stepAmt);
@@ -28,12 +28,12 @@ void Oscillator::updateStep() {
     else {
         curStep += stepAmt;
         // Serial.println(curStep);
-        
     }
 }
 
 float Oscillator::getCurPos() {
-    float curRadian = mapFloat(curStep, 0, MAX_STEPS, 0, 2.0);
+    updateStep();
+    float curRadian = mapFloat(curStep, 0.0, (float)MAX_STEPS, 0.0, 8.0);
     return sin(curRadian);
 }
 

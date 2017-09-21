@@ -8,6 +8,7 @@ public:
     Oscillator();
     void setStepAmt(float);
     void updateStep();
+    float getCurPos();
     LEDColor updateColorCycle(LEDColor);
 
 private:

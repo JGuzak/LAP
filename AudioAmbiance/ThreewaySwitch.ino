@@ -5,7 +5,9 @@
 ThreewaySwitch::ThreewaySwitch(int a, int b) {
     pin1 = a;
     pin2 = b;
-
+    for (int i = 0; i < NUM_MODES; i++) {
+        state[i] = 0;
+    }
     pinMode(pin1, INPUT_PULLUP);
     pinMode(pin2, INPUT_PULLUP);
 }
@@ -15,22 +17,27 @@ Switch_Position ThreewaySwitch::getPosition() {
     return position;
 }
 
-int[] ThreewaySwitch::getState() {
+int* ThreewaySwitch::getState() {
     updateState();
     return state;
 }
 
 // TODO: test this
 void ThreewaySwitch::updateState() {
+    int newState;
     if (digitalRead(pin1) == LOW) {
-        state = { 0, 0, 1 };
+        newState = 0;
         position = DOWN;
     } else if (digitalRead(pin2) == LOW) {
-        state = { 0, 1, 0 };
+        newState = 1;
         position = CENTER;
     } else {
-        state = { 1, 0, 0 };
+        newState = 2;
         position = UP;
+    }
+
+    for (int i = 0; i < NUM_STATES; i++) {
+        state[i] = STATE[newState][i];
     }
     // Serial.println(position);
 }

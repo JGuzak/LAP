@@ -33,6 +33,16 @@ inline float getScale(AudioInput& audio) {
     return scale;
 }
 
+inline float getScale(float val) {
+    float scale = val / 360.0;
+
+    if (scale > 1.0) {
+        scale = 1.0;
+    }
+
+    return scale;
+}
+
 inline float getScale(Potentiometer& knob) {
     float scale = (float)knob.getValue() / (float)knob.MAX_OUTPUT;
 

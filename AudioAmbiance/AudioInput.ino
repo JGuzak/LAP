@@ -3,7 +3,7 @@
 #include "AudioInput.h"
 
 AudioInput::AudioInput(int p) {
-    upperReadThreshold = 100;
+    upperReadThreshold = 80;
     pin = p;
     value = analogRead(pin);
 }
