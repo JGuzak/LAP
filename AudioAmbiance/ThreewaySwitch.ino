@@ -8,8 +8,8 @@ ThreewaySwitch::ThreewaySwitch(int a, int b) {
     for (int i = 0; i < NUM_MODES; i++) {
         state[i] = 0;
     }
-    pinMode(pin1, INPUT_PULLUP);
-    pinMode(pin2, INPUT_PULLUP);
+    pinMode(pin1, INPUT);
+    pinMode(pin2, INPUT);
 }
 
 Switch_Position ThreewaySwitch::getPosition() {
@@ -25,10 +25,10 @@ int* ThreewaySwitch::getState() {
 // TODO: test this
 void ThreewaySwitch::updateState() {
     int newState;
-    if (digitalRead(pin1) == LOW) {
+    if (digitalRead(pin1) == HIGH) {
         newState = 0;
         position = DOWN;
-    } else if (digitalRead(pin2) == LOW) {
+    } else if (digitalRead(pin2) == HIGH) {
         newState = 1;
         position = CENTER;
     } else {
