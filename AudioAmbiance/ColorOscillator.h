@@ -1,12 +1,11 @@
 // Author: Jordan Guzak
 
-#ifndef COLOR_OSCILLATOR_H
-#define COLOR_OSCILLATOR_H
+#ifndef OSCILLATOR_H
+#define OSCILLATOR_H
 
-class ColorOscillator {
+class Oscillator {
 public:
-    ColorOscillator();
-
+    Oscillator();
     void setStepAmt(float);
     void updateStep();
     LEDColor updateColorCycle(LEDColor);

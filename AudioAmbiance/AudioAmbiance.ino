@@ -10,7 +10,7 @@ bool DEBUG_MODE = true;
 #include "Potentiometer.h"
 #include "AudioInput.h"
 #include "ColorModes.h"
-#include "ColorOscillator.h"
+#include "Oscillator.h"
 #include "Oscillator.h"
 #include "ExtraFunctions.h"
 
@@ -28,12 +28,17 @@ float stepSamples[NUM_LEDS];
 float curStep = 0;
 float stepAmt = 4.0;
 
-// objects
-ColorOscillator colorOscillator;
+// internal state objects
+Oscillator colorOscillator;
 Oscillator oscillator;
+
+// hardware input objects
 ThreewaySwitch threewaySwitch(7, 6);
 Potentiometer knob1(A0), knob2(A1), knob3(A2);
 AudioInput audioStream(A5);
+
+// hardware output objects
+bool ledMode[3] = {};
 Adafruit_NeoPixel ledStrip = Adafruit_NeoPixel(NUM_LEDS, LED_STRIP_PIN, NEO_GRBW + NEO_KHZ800);
 
 void setup() {
@@ -50,9 +55,9 @@ void setup() {
     color = setRGBColor(knob1, knob2, knob3, color);
 
     // temp mode switcher, don't use this
-    // pinMode(4, OUTPUT);
-    // pinMode(3, OUTPUT);
-    // pinMode(2, OUTPUT);
+    pinMode(4, OUTPUT);
+    pinMode(3, OUTPUT);
+    pinMode(2, OUTPUT);
 
     audioStream.setMaxRead(100);
 
@@ -104,7 +109,10 @@ void loop() {
             // knob 3 sets blue value
             color = setRGBColor(knob1, knob2, knob3, color);
             color.W = 100;
-            float brightnessScale = getScale(audioStream);
+
+            // audio stream sets brightness scale
+            brightnessScale = getScale(audioStream);
+
             displayStaticStrip(&ledStrip, adjustBrightness(brightnessScale, color));
 
             // led outputs
@@ -114,11 +122,15 @@ void loop() {
             break;
         case CENTER: // color oscillating responsive mode
             // knob 1 sets color osc speed
-            // knob 2
-            // knob 3
             colorOscillator.setStepAmount((float)knob1.getValue() / (float)knob1.MAX_OUTPUT);
             color = colorOscillator.updateColorCycle(color);
-            float brightnessScale = getScale(audioStream);
+
+            // TODO: setup features for knobs 2 and 3
+            // knob 2
+            // knob 3
+
+            // audio stream sets brightness scale
+            brightnessScale = getScale(audioStream);
             displayStaticStrip(&ledStrip, adjustBrightness(brightnessScale, color));
 
             // led outputs
@@ -128,14 +140,18 @@ void loop() {
             break;
         case DOWN: // color and brightness oscillating static mode
             // knob 1 sets color osc speed
-            // knob 2 sets brightness osc speed
-            // knob 3 sets brightness osc depth
             colorOscillator.setStepAmt(getScale(knob1));
             color = colorOscillator.updateColorCycle(color);
+
+            // knob 2 sets brightness osc speed
             oscillator.setOscSpeed(getScale(knob2));
+
+            // knob 3 sets brightness osc depth
             float maxBrightness = getScale(knob3);
-            float brightness = mapFloat(oscillator.getCurPos(), -1.0, 1.0, 0.0, maxBrightness);
-            displayStaticStrip(&ledStrip, adjustBrightness(brightness, color));
+
+            // audio stream sets brightness scale
+            brightnessScale = mapFloat(oscillator.getCurPos(), -1.0, 1.0, 0.0, maxBrightness);
+            displayStaticStrip(&ledStrip, adjustBrightness(brightnessScale, color));
 
             // led outputs
             // digitalWrite(4, LOW);
@@ -147,12 +163,15 @@ void loop() {
     if (DEBUG_MODE) {
         Serial.print("Current Mode: ");
         Serial.print(mode);
-        Serial.print(" Knob 1: ");
+        Serial.print(" |Threeway Switch Pins: |A= ");
+        Serial.print();
+        Serial.print(" |Knob 1: ");
         Serial.print(knob1.getValue());
-        Serial.print(" Knob 2: ");
+        Serial.print(" |Knob 2: ");
         Serial.print(knob2.getValue());
-        Serial.print(" Knob 3: ");
+        Serial.print(" |Knob 3: ");
         Serial.print(knob3.getValue());
+        Serial.print();
         Serial.println();
     }
 }

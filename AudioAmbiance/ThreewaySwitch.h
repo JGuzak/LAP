@@ -10,9 +10,11 @@ class ThreewaySwitch {
 public:
     ThreewaySwitch(int, int);
     Switch_Position getPosition();
+    int[] getState();
 
 private:
-    int pin1, pin2;
+    void updateState();
+    int state[3];
     Switch_Position position;
 
 };

@@ -1,10 +1,8 @@
 // Author: Jordan Guzak
 
-#include "ColorOscillator.h"
+#include "Oscillator.h"
 
-
-
-ColorOscillator::ColorOscillator() {
+Oscillator::Oscillator() {
     curStep = 0.0;
     stepAmt = 1.0;
 }
@@ -13,25 +11,33 @@ ColorOscillator::ColorOscillator() {
  * Sets the step amount as long as the value is between
  * 0 and 1.
  */
-void ColorOscillator::setStepAmt(float newStepAmt) {
+void Oscillator::setStepAmt(float newStepAmt) {
     if (newStepAmt < 1.0) {
         if (newStepAmt <= 0.0) {
             newStepAmt = 0.05;
         }
         stepAmt = newStepAmt * 25.0;
+        // Serial.println(stepAmt);
     }
 }
 
-void ColorOscillator::updateStep() {
+void Oscillator::updateStep() {
     if (curStep > MAX_STEPS) {
         curStep = 0.0;
     }
     else {
         curStep += stepAmt;
+        // Serial.println(curStep);
+        
     }
 }
 
-LEDColor ColorOscillator::updateColorCycle(LEDColor color) {
+float Oscillator::getCurPos() {
+    float curRadian = mapFloat(curStep, 0, MAX_STEPS, 0, 2.0);
+    return sin(curRadian);
+}
+
+LEDColor Oscillator::updateColorCycle(LEDColor color) {
     updateStep();
     if (curStep >= 0 && curStep < MAX_STEPS) {
         if (curStep < (QUARTER_STEPS)) {

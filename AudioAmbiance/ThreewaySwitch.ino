@@ -11,17 +11,26 @@ ThreewaySwitch::ThreewaySwitch(int a, int b) {
 }
 
 Switch_Position ThreewaySwitch::getPosition() {
-    Serial.print(digitalRead(pin1));
-    Serial.print(" ");
-    Serial.print(digitalRead(pin2));
-    Serial.println();
+    updateState();
+    return position;
+}
+
+int[] ThreewaySwitch::getState() {
+    updateState();
+    return state;
+}
+
+// TODO: test this
+void ThreewaySwitch::updateState() {
     if (digitalRead(pin1) == LOW) {
+        state = { 0, 0, 1 };
         position = DOWN;
     } else if (digitalRead(pin2) == LOW) {
+        state = { 0, 1, 0 };
         position = CENTER;
     } else {
+        state = { 1, 0, 0 };
         position = UP;
     }
-    
-    return position;
+    // Serial.println(position);
 }
