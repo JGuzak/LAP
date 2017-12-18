@@ -6,17 +6,12 @@ bool DEBUG_MODE = true;
 
 //#include <Arduino.h>
 #include <Adafruit_NeoPixel.h>
-#include <FFT.h>
 #include "ThreewaySwitch.h"
 #include "Potentiometer.h"
 #include "AudioInput.h"
 #include "ColorModes.h"
 #include "Oscillator.h"
 #include "ExtraFunctions.h"
-
-
-#define LOG_OUT 1
-#define FFT_N 256
 
 // Constants:
 const int LED_STRIP_PIN = 5;
@@ -52,12 +47,6 @@ void setup() {
     if (DEBUG_MODE) {
         Serial.begin(19200);
     }
-
-    // init fft variables
-    TIMSK0 = 0; // turn off timer0 for lower jitter
-    ADCSRA = 0xe5; // set the adc to free running mode
-    ADMUX = 0x40; // use adc0
-    DIDR0 = 0x01; // turn off the digital input for adc0
 
     // init color and hardware states
     // threewaySwitch.getPosition();
