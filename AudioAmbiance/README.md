@@ -4,6 +4,7 @@ Audio responsive LED strip that connects to a sound source via 1/8" Aux cable. T
 
 ## Images
 
+#### I/O
 ![](https://github.com/JGuzak/LAP/blob/master/AudioAmbiance/proto%20board%20images/shield%20io.jpg)
 Prototype shield specs (I/O listed relative to image listed from left to right):
 * Power cable input
@@ -14,8 +15,10 @@ Future refinements:
 * Needs audio pass through
 * PCB version
 
+#### Shield Wiring
 ![](https://github.com/JGuzak/LAP/blob/master/AudioAmbiance/proto%20board%20images/shield%20inside.jpg)
 
+#### LED Connector
 ![](https://github.com/JGuzak/LAP/blob/master/AudioAmbiance/proto%20board%20images/led%20strip%20connection.jpg)
 LED connector specs:
 * 1/8 inch stereo jack
