@@ -22,8 +22,8 @@ Future refinements:
 ![](https://github.com/JGuzak/LAP/blob/master/AudioAmbiance/proto%20board%20images/led%20strip%20connection.jpg)
 LED connector specs:
 * 1/8 inch stereo jack
-** 5v Power
-** Ground
-** Serial Signal
+  * 5v Power
+  * Ground
+  * Serial Signal
 
 (Only plug in LED strip to shield while Arduino is off)
