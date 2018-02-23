@@ -1,8 +1,7 @@
-
 // Author: Jordan Guzak
 // Audio Ambiance is designed to enhance your listening experience
 
-bool DEBUG_MODE = true;
+bool DEBUG_MODE = false;
 
 //#include <Arduino.h>
 #include <Adafruit_NeoPixel.h>
@@ -23,7 +22,7 @@ const int QUARTER_STEPS = (int)(MAX_STEPS / 4);
 
 
 // internal state variables
-Switch_Position mode = UP, newMode = UP;
+Switch_Position mode = DOWN, newMode = UP;
 LEDColor color;
 float stepSamples[NUM_LEDS];
 float curStep = 0;
@@ -134,7 +133,7 @@ void loop() {
             color = colorOsc.updateColorCycle(color);
 
             // knob 2 sets brightness osc speed
-            brightnessOsc.setStepAmt(mapFloat(getScale(knob2), 0.0, 1.0, 0.3, 1.0));
+            brightnessOsc.setStepAmt(mapFloat(getScale(knob2), 0.0, 1.0, 0.1, 1.0));
 
             // knob 3 sets brightness osc depth
             float maxBrightness = getScale(knob3);
@@ -151,14 +150,14 @@ void loop() {
     }
 
     if (DEBUG_MODE) {
-        // Serial.print("Mode: ");
-        // Serial.print(mode+1);
-        // Serial.print(" |Knob 1: ");
-        // Serial.print(knob1.getValue());
-        // Serial.print(" |Knob 2: ");
-        // Serial.print(knob2.getValue());
-        // Serial.print(" |Knob 3: ");
-        // Serial.print(knob3.getValue());
-        // Serial.println();
+        Serial.print("Mode: ");
+        Serial.print(mode+1);
+        Serial.print(" |Knob 1: ");
+        Serial.print(knob1.getValue());
+        Serial.print(" |Knob 2: ");
+        Serial.print(knob2.getValue());
+        Serial.print(" |Knob 3: ");
+        Serial.print(knob3.getValue());
+        Serial.println();
     }
 }

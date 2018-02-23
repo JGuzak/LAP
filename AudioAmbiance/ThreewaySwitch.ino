@@ -8,8 +8,8 @@ ThreewaySwitch::ThreewaySwitch(int a, int b) {
     for (int i = 0; i < NUM_MODES; i++) {
         state[i] = 0;
     }
-    pinMode(pin1, INPUT);
-    pinMode(pin2, INPUT);
+    pinMode(pin1, INPUT_PULLUP);
+    pinMode(pin2, INPUT_PULLUP);
 }
 
 Switch_Position ThreewaySwitch::getPosition() {

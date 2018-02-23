@@ -1,4 +1,3 @@
-
 // Author: Jordan Guzak
 // Audio Ambiance is designed to enhance your listening experience
 
@@ -13,7 +12,6 @@ bool DEBUG_MODE = true;
 #include "ColorModes.h"
 #include "Oscillator.h"
 #include "ExtraFunctions.h"
-
 
 #define LOG_OUT 1
 #define FFT_N 256
@@ -162,14 +160,14 @@ void loop() {
     }
 
     if (DEBUG_MODE) {
-        // Serial.print("Mode: ");
-        // Serial.print(mode+1);
-        // Serial.print(" |Knob 1: ");
-        // Serial.print(knob1.getValue());
-        // Serial.print(" |Knob 2: ");
-        // Serial.print(knob2.getValue());
-        // Serial.print(" |Knob 3: ");
-        // Serial.print(knob3.getValue());
-        // Serial.println();
+        Serial.print("Mode: ");
+        Serial.print(mode+1);
+        Serial.print(" |Knob 1: ");
+        Serial.print(knob1.getValue());
+        Serial.print(" |Knob 2: ");
+        Serial.print(knob2.getValue());
+        Serial.print(" |Knob 3: ");
+        Serial.print(knob3.getValue());
+        Serial.println();
     }
 }
