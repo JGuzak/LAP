@@ -15,7 +15,7 @@ const bool DEBUG_MODE = false;
 // Constants:
 const int LED_STRIP_PIN = 5;
 const int  NUM_LEDS = 60;
-const int  BRIGHTNESS = 80;
+const int  BRIGHTNESS = 60;
 const int  NUM_MODES = 3;
 const float MAX_STEPS = 1020.0;
 const int QUARTER_STEPS = (int)(MAX_STEPS / 4);
@@ -51,7 +51,7 @@ void setup() {
     knob1.getValue();
     knob1.getValue();
     knob1.getValue();
-    color.W = 100;
+    color.W = 80;
     color = setRGBColor(knob1, knob2, knob3, color);
 
     // led setup

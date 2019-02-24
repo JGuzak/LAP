@@ -47,4 +47,3 @@ void AudioInput::setMaxRead(int newMax) {
         upperReadThreshold = newMax;
     }
 }
-
